@@ -4,7 +4,7 @@ source(here("R", "create_disaster.R"))
 
 covars <- read.csv(here("original", "covariates.csv"), header = TRUE)
 
-covars <- rename(covars, Year = year)
+covars <- rename(covars, Year = year)#note
 
 final_data_1 <- left_join(combined_data, con.df, by = c('ISO','Year'))
 
