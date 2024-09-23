@@ -5,6 +5,8 @@ library(here)
 library(dplyr)
 library(tidyr)
 library(usethis)
+library(purrr)
+library(countrycode)
 
 here()
 
@@ -21,5 +23,11 @@ disaster_new$drought <- ifelse(disaster_new$Disaster.Type == "Drought", 1, 0)
 
 disaster_new$earthquake <- ifelse(disaster_new$Disaster.Type == "Earthquake", 1, 0)
 
-disaster_new_1 <- disaster_new %>% group_by(ISO, Year) %>% 
+disaster_final <- disaster_new %>% group_by(ISO, Year) %>% 
   summarize(drought = sum(drought), earthquake = sum(earthquake))
+
+disaster_final$ISO <- countrycode(disaster_final$Country.Name,
+                                 origin = "country.name",
+                                 destination = "iso3c")
+
+disaster_final$Country.Name <- NULL
