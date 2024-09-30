@@ -15,8 +15,6 @@ con.df <- con.df %>% group_by(ISO, year) %>%
 
 con.df$conflict <- ifelse(con.df$best>25, 1, 0)
 
-con.df$best <- NULL
-
 con.df$country.name <- NULL
-
+con.df <- rename(con.df, totdeath = best)
 con.df <- rename(con.df, Year = year)

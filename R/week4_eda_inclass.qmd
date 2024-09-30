@@ -1,0 +1,46 @@
+---
+title: "CHL8010: Statistical Programming and Computation in Health Data"
+author: "Aoqi Xie"
+date: "2024-09-30"
+format: pdf
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+# source("../.Rprofile")
+library(here)
+library(dplyr)
+library(tidyr)
+library(usethis)
+library(purrr)
+library(countrycode)
+```
+
+
+## Perfect your GitHub repo
+
+Some of you may still need to organize your GitHub repo. Use this time to do that. When you are confident with your repo, let me know -- I will try to reproduce your code. 
+
+Your final data should have the following variables (you might have slightly different variable names).
+```{r}
+finaldata <- read.csv(here("data", "primaryanalysis_data.csv"), 
+                      header = TRUE)
+names(finaldata)
+```
+
+
+Observations from Canada should look like this...
+```{r}
+finaldata %>%
+  dplyr::filter(country_name == "Canada")
+```
+Observations from Ecuador should look like this...
+```{r}
+finaldata %>%
+  dplyr::filter(country_name == "Ecuador")
+```
+
+## Exploratory data analysis
+
+Use the rest of the class time to explore the final data that will be used for analysis starting next week. At the end of the class, write a summary of your findings and push your **Quarto document (pdf)** to your repo. 
