@@ -11,10 +11,12 @@ format: pdf
 # source("../.Rprofile")
 library(here)
 library(dplyr)
+library(ggplot2)
 library(tidyr)
 library(usethis)
 library(purrr)
 library(countrycode)
+library(corrplot)
 ```
 
 
@@ -29,12 +31,12 @@ finaldata <- read.csv(here("data", "primaryanalysis_data.csv"),
 names(finaldata)
 ```
 
-
 Observations from Canada should look like this...
 ```{r}
 finaldata %>%
   dplyr::filter(country_name == "Canada")
 ```
+
 Observations from Ecuador should look like this...
 ```{r}
 finaldata %>%
@@ -42,5 +44,33 @@ finaldata %>%
 ```
 
 ## Exploratory data analysis
-
 Use the rest of the class time to explore the final data that will be used for analysis starting next week. At the end of the class, write a summary of your findings and push your **Quarto document (pdf)** to your repo. 
+
+1. Understand the structure of the data
+From the results below, there are a total of 5320 observations with 21 variables (8 integer types, 10 numerical types, and 3 character types). We can also see some missingness in the data set, which should be carefully taken care of.
+```{r}
+str(finaldata)                       
+summary(finaldata) 
+```
+
+2. Understand the distribution and skewness of the outcome data (total death from the conflict data)
+```{r}
+ggplot(finaldata, aes(x = Year, y = totdeath)) +
+  geom_histogram(stat = "identity", position = "dodge") +
+  facet_wrap(~ region, nrow = 9, ncol = 2) +
+  labs(title = "Histogram of total deaths by Year and Region",
+       x = "Year",
+       y = "Totdeath") +
+ theme_minimal(base_size = 10) +  # Increase base font size for better visibility
+  theme(
+    strip.text = element_text(size = 10),  # Size of facet labels
+    plot.title = element_text(size = 12, face = "bold"),  # Title size
+    axis.title = element_text(size = 12),  # Axis title size
+    axis.text = element_text(size = 10)  # Axis text size
+  )
+```
+3. Understand the correlation among the numeric variables. We can see that the mortality rates are highly correlated, and moderate correlation observed among ``gdp1000``, ``OECD'', and ``popdens''.
+```{r}
+correlation_matrix <- cor(finaldata %>% select_if(is.numeric), use = "complete.obs")  # Select only numeric columns
+corrplot(correlation_matrix, method = "circle")  # Visualize correlation matrix
+```
