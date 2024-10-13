@@ -1,5 +1,5 @@
 ---
-title: "CHL8010: Statistical Programming and Computation in Health Data"
+title: "Week 4 in class EDA"
 author: "Aoqi Xie"
 date: "2024-09-30"
 format: pdf
@@ -53,23 +53,7 @@ str(finaldata)
 summary(finaldata) 
 ```
 
-2. Understand the distribution and skewness of the outcome data (total death from the conflict data)
-```{r}
-ggplot(finaldata, aes(x = Year, y = totdeath)) +
-  geom_histogram(stat = "identity", position = "dodge") +
-  facet_wrap(~ region, nrow = 9, ncol = 2) +
-  labs(title = "Histogram of total deaths by Year and Region",
-       x = "Year",
-       y = "Totdeath") +
- theme_minimal(base_size = 10) +  # Increase base font size for better visibility
-  theme(
-    strip.text = element_text(size = 10),  # Size of facet labels
-    plot.title = element_text(size = 12, face = "bold"),  # Title size
-    axis.title = element_text(size = 12),  # Axis title size
-    axis.text = element_text(size = 10)  # Axis text size
-  )
-```
-3. Understand the correlation among the numeric variables. We can see that the mortality rates are highly correlated, and moderate correlation observed among ``gdp1000``, ``OECD'', and ``popdens''.
+2. Understand the correlation among the numeric variables. We can see that the mortality rates are highly correlated, and moderate correlation observed among ``gdp1000``, ``OECD``, and ``popdens``.
 ```{r}
 correlation_matrix <- cor(finaldata %>% select_if(is.numeric), use = "complete.obs")  # Select only numeric columns
 corrplot(correlation_matrix, method = "circle")  # Visualize correlation matrix

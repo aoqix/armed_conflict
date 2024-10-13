@@ -1,0 +1,116 @@
+---
+title: "Week 5 in class Table1 "
+author: "Aoqi Xie"
+date: "2024-10-07"
+format: pdf
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+library(here)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(usethis)
+library(purrr)
+library(countrycode)
+library(corrplot)
+library(table1)
+library(kableExtra)
+```
+
+```{r, results=FALSE}
+prim_data <- read.csv(here("data", "primaryanalysis_data.csv"), 
+                      header = TRUE)
+#names(prim_data)
+#summary(prim_data)
+
+prim_data %>% filter(Year == 2000)
+```
+```{r}
+prim_data$earthquake <- ifelse(prim_data$earthquake>=1, 1, 0)
+prim_data$drought <- ifelse(prim_data$drought>=1, 1, 0)
+#prim_data$ <- ifelse(prim_data$earthquake>=1, 1, 0)
+#prim_data$ <- ifelse(prim_data$earthquake>=1, 1, 0)
+#prim_data$ <- ifelse(prim_data$earthquake>=1, 1, 0)
+```
+
+
+## Table 1 creation
+```{r}
+prim_data$earthquake <- 
+  factor(prim_data$earthquake, levels=c(1,0),
+         labels=c("Yes", 
+                  "No"))
+
+prim_data$drought <- 
+  factor(prim_data$drought, levels=c(1,0),
+         labels=c("Yes", 
+                  "No"))
+
+prim_data$conflict <- 
+  factor(prim_data$conflict, levels=c(1,0),
+         labels=c("Yes", 
+                  "No"))
+
+prim_data$OECD <- 
+  factor(prim_data$OECD, levels=c(1,0),
+         labels=c("Yes", 
+                  "No"))
+
+label(prim_data$MatMor) <- "Maternal Mortality"
+
+label(prim_data$UndMor) <- "Under-5 Mortality"
+
+label(prim_data$NeoMor) <- "Neonatal Mortality"
+
+label(prim_data$InfMor) <- "Infant Mortality"
+
+label(prim_data$conflict) <- "Armed Conflict"
+
+label(prim_data$earthquake) <- "Earthquake"
+
+label(prim_data$drought) <- "Drought"
+
+label(prim_data$totdeath) <- "Total Number of Deaths"
+
+label(prim_data$region) <- "Region"
+
+label(prim_data$gdp1000) <- "GDP per capita"
+
+label(prim_data$OECD) <- "OECD member"
+
+label(prim_data$popdens) <- "Population Density"
+
+label(prim_data$urban) <- "Urban Residence"
+
+label(prim_data$agedep) <- "Age Dependency Ratio"
+
+label(prim_data$male_edu) <- "Male Education"
+
+label(prim_data$temp) <- "Temperature"
+
+label(prim_data$rainfall1000) <- "Rainfall"
+
+#units(melanoma2$age) <- "years"
+
+caption  <- "Basic summary of variables stratified by Armed Conflict"
+footnote <- "Baseline year 2000"
+```
+
+```{r}
+# tbl1 <- table1(~ InfMor + NeoMor + UndMor +
+#                  MatMor + totdeath + region + 
+#                  gdp1000 + OECD + popdens + urban
+#                + agedep + male_edu + temp + 
+#                  rainfall1000 + drought + 
+#                  earthquake | conflict, 
+#                overall = c(left = "Total"), data=prim_data, caption = caption, footnote = footnote)
+
+table1(~ totdeath + gdp1000 + OECD + popdens + urban 
+       + agedep + male_edu + temp + rainfall1000
+       + drought + earthquake | conflict, 
+       overall = c(left = "Total"), data=prim_data, caption = caption, footnote = footnote)
+```
+
